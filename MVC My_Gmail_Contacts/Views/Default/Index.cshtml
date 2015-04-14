@@ -14,6 +14,12 @@
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DOB)
+        </th>
         <th></th>
     </tr>
 
@@ -23,7 +29,13 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new {  id=item.Contact_ID }) |
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DOB)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new {  id=item.Contact_ID  }) |
             @Html.ActionLink("Details", "Details", new { id = item.Contact_ID }) |
             @Html.ActionLink("Delete", "Delete", new { id = item.Contact_ID })
         </td>

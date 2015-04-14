@@ -39,8 +39,11 @@ namespace MVC_My_Gmail_Contacts.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            string query = "SELECT Contact_ID, Name, Email, DOB FROM My_Gmail_Contacts WHERE Contact_ID = " + id + ";";
-            DataSet ds = My_Contacts.SendDataSet(query);
+            //string query = "SELECT Contact_ID, Name, Email, DOB FROM My_Gmail_Contacts WHERE Contact_ID = " + id + ";";
+             Dictionary<string, object> data=new Dictionary<string,object>();
+             data.Add("id",id);
+
+            DataSet ds = My_Contacts.SendDataSet("Details_Contact",data);
 
             if (ds == null)
             {
@@ -72,8 +75,13 @@ namespace MVC_My_Gmail_Contacts.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    string query = "INSERT INTO My_Gmail_Contacts(Name,DOB,Email) VALUES('" + My_Contacts.Name + "','" + My_Contacts.DOB + "','" + My_Contacts.Email + "')";
-                    My_Contacts.ExecuteCommand(query);
+                    //string query = "INSERT INTO My_Gmail_Contacts(Name,DOB,Email) VALUES('" + My_Contacts.Name + "','" + My_Contacts.DOB + "','" + My_Contacts.Email + "')";
+                    Dictionary<string, object> data=new Dictionary<string,object>();
+                    data.Add("Name",My_Contacts.Name);
+                    data.Add("DOB",My_Contacts.DOB);
+                    data.Add("Email",My_Contacts.Email);
+                  
+                    My_Contacts.ExecuteCommand("Add_Contact", data);
                 }
 
                 return RedirectToAction("Index");

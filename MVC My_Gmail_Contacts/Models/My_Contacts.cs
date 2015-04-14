@@ -55,6 +55,33 @@ namespace MVC_My_Gmail_Contacts.Models
         }
 
 
+        public static void ExecuteCommand(string procedure, Dictionary<string, object> parameters)
+        {
+            SqlConnection conn = new SqlConnection(connStr);
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand(procedure, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            foreach (KeyValuePair<string, object> parameter in parameters)
+            {
+                cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+            }
+            string msg = "";
+            try
+            {
+                Convert.ToInt32(cmd.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                msg = ex.ToString();
+            }
+            cmd.Dispose();
+            conn.Dispose();
+
+            return;
+        }
+
 
         public static DataSet SendDataSet(string strsql)
         {
@@ -75,5 +102,33 @@ namespace MVC_My_Gmail_Contacts.Models
 
             return ds;
         }
+
+
+        public static DataSet SendDataSet(string procedure, Dictionary<string, object> parameters)
+        {
+            DataSet ds = new DataSet();
+
+            SqlConnection conn = new SqlConnection(connStr);
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand(procedure, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            foreach (KeyValuePair<string, object> parameter in parameters)
+            {
+                cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+            }
+
+            SqlDataAdapter adp = new SqlDataAdapter(cmd);
+            adp.Fill(ds);
+
+            cmd.Parameters.Clear();
+            cmd.Dispose();
+            conn.Dispose();
+
+            return ds;
+        }
+
+
     }
 }
